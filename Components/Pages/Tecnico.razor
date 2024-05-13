@@ -1,0 +1,72 @@
+﻿
+@page "/tecnico"
+@using RegistrodeTecnico.Models;
+
+<h3>Listado de Técnicos</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>TécnicoId</th>
+            <th>Nombres</th>
+            <th>Sueldo por Hora</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tecnico in technicians)
+        {
+            <tr>
+                <td>@tecnico.TecnicoId</td>
+                <td>@tecnico.Nombres</td>
+                <td>@tecnico.SueldoHora</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Agregar Técnico</h3>
+
+<EditForm Model="@newTecnico" OnValidSubmit="@AddTecnico">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="nombres">Nombres:</label>
+        <InputText id="nombres" @bind-Value="newTechnician.Nombres" class="form-control" />
+        <ValidationMessage For="@(() => newTechnician.Nombres)" />
+    </div>
+
+    <div class="form-group">
+        <label for="sueldoHora">Sueldo por Hora:</label>
+        <InputNumber id="sueldoHora" @bind-Value="newTechnician.SueldoHora" class="form-control" />
+        <ValidationMessage For="@(() => newTechnician.SueldoHora)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Agregar</button>
+</EditForm>
+
+@code {
+    List<Technician> technicians;
+    Technician newTechnician = new Technician();
+    TechnicianDAL technicianDAL = new TechnicianDAL();
+
+    protected override void OnInitialized()
+    {
+        technicians = technicianDAL.GetAllTechnicians();
+    }
+
+    void AddTechnician()
+    {
+        try
+        {
+            technicianDAL.AddTechnician(newTechnician);
+            technicians = technicianDAL.GetAllTechnicians();
+            newTechnician = new Technician();
+        }
+        catch (Exception ex)
+        {
+            // Manejar el error, por ejemplo, mostrar un mensaje al usuario
+        }
+    }
+}
+
