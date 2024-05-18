@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegistrodeTecnico.Components.Pages;
-using RegistroTecnicos.Models;
-using System.Collections.Generic;
+
 namespace RegistroTecnicos.DAL
 {
     public class Contexto : DbContext
@@ -10,6 +9,6 @@ namespace RegistroTecnicos.DAL
         public Contexto(DbContextOptions<Contexto> options)
         : base(options) { }
 
-        public DbSet<Tecnicos> Tecnicos { get; set; }
+        public DbSet<Tecnico> Tecnicos { get; set; }
     }
 }
