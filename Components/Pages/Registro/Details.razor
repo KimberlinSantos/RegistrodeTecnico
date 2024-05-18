@@ -1,0 +1,25 @@
+﻿@page "/tipostecnicos/details/{tipoId}"
+
+@inject TipoTecnicoService TipoTecnicoService
+
+<h1>Detalle Tipo Técnico</h1>
+
+@code {
+    [Parameter]
+    public int TipoId { get; set; }
+
+    private TipoTecnico tipoTecnico;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tipoTecnico = await TipoTecnicoService.GetTipoTecnicoById(TipoId);
+    }
+}
+
+<div class="row">
+    <div class="col-sm-2">Tipo ID:</div>
+    <div class="col-sm-10">@tipoTecnico.TipoId</div>
+</div>
+<div class="row">
+    <div class="col-sm-2">Descripción:</div>
+    <

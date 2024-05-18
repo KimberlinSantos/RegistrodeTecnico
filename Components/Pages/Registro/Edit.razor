@@ -1,0 +1,38 @@
+﻿@page "/tipostecnicos/edit/{tipoId}"
+
+@inject TipoTecnicoService TipoTecnicoService
+
+<h1>Editar Tipo Técnico</h1>
+
+@code {
+    [Parameter]
+    public int TipoId { get; set; }
+
+    private TipoTecnico tipoTecnico;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tipoTecnico = await TipoTecnicoService.GetTipoTecnicoById(TipoId);
+    }
+
+    private async Task HandleSubmit()
+    {
+        await TipoTecnicoService.UpdateTipoTecnico(tipoTecnico);
+        navigationManager.NavigateTo("/tipostecnicos");
+    }
+
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+}
+ 
+  < form @submit.prevent="HandleSubmit">
+    <div class="form-group">
+        Descripción:
+        <input type="text" class="form-control" id="descripcion" @bind-value="tipoTecnico.Descripcion">
+        @if (string.IsNullOrEmpty(tipoTecnico.Descripcion))
+        {
+            <span class="text-danger">La descripción es requerida.</span>
+        }
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+</form>

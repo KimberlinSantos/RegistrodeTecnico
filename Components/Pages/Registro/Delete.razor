@@ -1,0 +1,32 @@
+﻿@page "/tipostecnicos/delete/{tipoId}"
+@using RegistrodeTecnico.Services
+
+@inject TipoTecnicoService TipoTecnicoService
+
+<h1>Eliminar Tipo Técnico</h1>
+
+<p>¿Está seguro que desea eliminar el tipo técnico "@tipoTecnico.Descripcion"?</p>
+
+<form @submit.prevent="HandleDelete">
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a class="btn btn-secondary" href="/tipostecnicos">Cancelar</a>
+</form>
+
+@code {
+    [Parameter]
+    public int TipoId { get; set; }
+
+    private TipoTecnico tipoTecnico;
+
+    protected override async Task OnInitializedAsync() => tipoTecnico = await 
+    TipoTecnicoService.GetTipoTecnicoById(TipoId);
+
+    private async Task HandleDelete()
+    {
+        await TipoTecnicoService.DeleteTipoTecnico(TipoId);
+        navigationManager.NavigateTo("/tipostecnicos");
+    }
+
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+}

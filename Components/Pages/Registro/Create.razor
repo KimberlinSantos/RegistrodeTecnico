@@ -1,0 +1,31 @@
+﻿@page "/tipostecnicos/create"
+@using RegistrodeTecnico.Components.Models
+
+@inject TipoTecnicoService TipoTecnicoService
+
+<h1>Crear Tipo Técnico</h1>
+
+<form @submit.prevent="HandleSubmit">
+    <div class="form-group">
+        <label for="descripcion">Descripción:</label>
+        <input type="text" class="form-control" id="descripcion" @bind-value="tipoTecnico.Descripcion">
+        @if (string.IsNullOrEmpty(tipoTecnico.Descripcion))
+        {
+            <span class="text-danger">La descripción es requerida.</span>
+        }
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+
+@code {
+    private TipoTecnico tipoTecnico = new TipoTecnico();
+
+    private async Task HandleSubmit()
+    {
+        await TipoTecnicoService.AddTipoTecnico(tipoTecnico);
+        navigationManager.NavigateTo("/tipostecnicos");
+    }
+
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+}
